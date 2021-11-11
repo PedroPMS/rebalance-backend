@@ -17,7 +17,7 @@ class ImportStocksCommand extends Command
         parent::__construct();
     }
 
-    public function handle(StocksService $stocksService)
+    public function handle(StocksService $stocksService): int
     {
         $stocks = Storage::disk('public')->path('exchanges/b3/stocks.csv');
         $stocksService->importStocks($stocks);
