@@ -39,7 +39,7 @@ class UpdateStocksCommand extends Command
 
         $this->stocksService->updateStocks($this->argument('stockType'));
         $this->newLine();
-        $this->info(__('Finalizado em').': '.$processStartedAt->diffForHumans(now()));
+        $this->info(__('Ends').': '. now()->diffForHumans($processStartedAt));
 
         return 0;
     }
