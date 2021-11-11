@@ -2,24 +2,45 @@
 
 namespace App\Console\Commands\Exchanges\B3;
 
-use App\Services\Exchanges\B3\StocksService;
+use App\Services\Exchanges\B3\UpdateStocksService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 class UpdateStocksCommand extends Command
 {
-    protected $signature = 'exchanges:b3-update-stocks';
+    protected $signature = 'exchanges:b3-update-stocks {stockType}';
 
     protected $description = 'Update all the stocks based on Yahoo Finance.';
 
-    public function __construct()
+    private UpdateStocksService $stocksService;
+
+    public function __construct(UpdateStocksService $stocksService)
     {
         parent::__construct();
+        $this->stocksService = $stocksService;
     }
 
-    public function handle(StocksService $stocksService): int
+    public function handle(): int
     {
-        $stocksService->updateStocks();
+        $processStartedAt = now();
+        $progressBar = null;
+
+        $this->stocksService->eventGetStocks = function ($stocks) use (&$progressBar) {
+            $progressBar = $this->output->createProgressBar(count($stocks));
+            $progressBar->start();
+        };
+
+        $this->stocksService->eventUpdateStock = function () use (&$progressBar) {
+            $progressBar->advance();
+        };
+
+        $this->stocksService->eventEnd = function () use (&$progressBar) {
+            $progressBar->finish();
+        };
+
+        $this->stocksService->updateStocks($this->argument('stockType'));
+        $this->newLine();
+        $this->info(__('Finalizado em').': '.$processStartedAt->diffForHumans(now()));
+
         return 0;
     }
 }

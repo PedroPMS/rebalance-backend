@@ -4,7 +4,6 @@ namespace App\Services\Exchanges\B3;
 
 use App\Models\Exchanges\B3\StocksModel;
 use App\Services\Utils\CsvReader;
-use App\Services\Utils\YahooFinanceScrapping;
 
 class StocksService
 {
@@ -13,28 +12,6 @@ class StocksService
     private const FII           = 3;
     private const TICKER_FII_B3 = '11';
     private const TICKER_ETF_B3 = '34';
-
-    private YahooFinanceScrapping $scrapping;
-
-    public function __construct(YahooFinanceScrapping $scrapping)
-    {
-        $this->scrapping = $scrapping;
-    }
-
-    public function updateStocks()
-    {
-        $stocks = StocksModel::where('stock_types_id', 2)->get();
-
-        foreach ($stocks as $stock) {
-            [$stockPrice, $variationValue, $variationPerc] = $this->scrapping->getStockInfo($stock->name);
-            $stock->update([
-                'actual_price' => $stockPrice,
-                'variation' => $variationValue,
-                'perc_variation' => $variationPerc,
-                'previous_close' => $stockPrice + $variationValue,
-            ]);
-        }
-    }
 
     public function importStocks(string $stocks)
     {
