@@ -6,11 +6,11 @@ use App\Services\Exchanges\B3\StocksService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
-class ImportStocksCommand extends Command
+class UpdateStocksCommand extends Command
 {
-    protected $signature = 'exchanges:b3-import-stocks';
+    protected $signature = 'exchanges:b3-update-stocks';
 
-    protected $description = 'Import all the stock of the exchange.';
+    protected $description = 'Update all the stocks based on Yahoo Finance.';
 
     public function __construct()
     {
@@ -19,8 +19,7 @@ class ImportStocksCommand extends Command
 
     public function handle(StocksService $stocksService): int
     {
-        $stocks = Storage::disk('public')->path('exchanges/b3/stocks.csv');
-        $stocksService->importStocks($stocks);
+        $stocksService->updateStocks();
         return 0;
     }
 }

@@ -9,7 +9,7 @@ class StocksModel extends Model
 {
     use HasFactory;
     protected $table = 'stocks';
-    protected $primaryKey = 'stock_types_id';
+    protected $primaryKey = 'stocks_id';
     protected $fillable = [
         'name',
         'stock_types_id',
