@@ -21,7 +21,7 @@ class CreateStocksSubwalletsTable extends Migration
             $table->decimal('ceiling_price');
 
             $table->unsignedBigInteger('subwallet_id');
-            $table->foreign('subwallet_id')->references('subwallet_id')->on('subwallets');
+            $table->foreign('subwallet_id')->references('subwallet_id')->on('subwallets')->onDelete('cascade');;
             $table->unsignedBigInteger('stocks_id');
             $table->foreign('stocks_id')->references('stocks_id')->on('stocks');
 

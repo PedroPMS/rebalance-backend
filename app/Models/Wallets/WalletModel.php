@@ -9,7 +9,7 @@ class WalletModel extends Model
 {
     use HasFactory;
     protected $table = 'wallets';
-    protected $primaryKey = 'stocks_id';
+    protected $primaryKey = 'wallet_id';
     protected $fillable = [
         'wallet_name',
         'user_id'

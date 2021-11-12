@@ -19,7 +19,7 @@ class CreateSubwalletsTable extends Migration
             $table->integer('target_percentage');
 
             $table->unsignedBigInteger('wallet_id');
-            $table->foreign('wallet_id')->references('wallet_id')->on('wallets');
+            $table->foreign('wallet_id')->references('wallet_id')->on('wallets')->onDelete('cascade');
             $table->unsignedBigInteger('stock_types_id');
             $table->foreign('stock_types_id')->references('stock_types_id')->on('stock_types');
 
